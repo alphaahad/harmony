@@ -10,12 +10,15 @@ for key, val in {"view_note": None, "show_form": False, "show_analysis": False}.
     if key not in st.session_state:
         st.session_state[key] = val
 
-# --- LOGIN CHECK FIRST ---
+# --- Login screen if not logged in ---
 if "email" not in st.session_state:
     login_screen()
     st.stop()
-else:
-    # --- Logout Button CSS ---
+
+# --- Only render logout button after login ---
+if "email" in st.session_state:
+
+    # Inject logout CSS
     st.markdown("""
         <style>
         .logout-button {
@@ -37,13 +40,13 @@ else:
         </style>
     """, unsafe_allow_html=True)
 
-    # --- Logout Button ---
+    # Functional Logout Button
     if st.button("Logout", key="logout", help="Log out of Harmony"):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
         st.rerun()
 
-    # --- Apply logout style via JavaScript ---
+    # JavaScript styling patch
     st.markdown("""
         <script>
         const buttons = window.parent.document.querySelectorAll('button');
@@ -54,7 +57,6 @@ else:
         }
         </script>
     """, unsafe_allow_html=True)
-
 
 
 # --- Floating Add Button ---
