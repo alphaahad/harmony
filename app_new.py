@@ -10,49 +10,51 @@ for key, val in {"view_note": None, "show_form": False, "show_analysis": False}.
     if key not in st.session_state:
         st.session_state[key] = val
 
-# --- Login Logic ---
+# --- LOGIN CHECK FIRST ---
 if "email" not in st.session_state:
     login_screen()
     st.stop()
-
-# --- Logout Button CSS and JavaScript ---
-st.markdown("""
-    <style>
-    .logout-button {
-        position: fixed;
-        top: 20px;
-        right: 25px;
-        z-index: 1000;
-        background-color: #f44336 !important;
-        color: white !important;
-        padding: 10px 20px !important;
-        border: none !important;
-        border-radius: 8px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        white-space: nowrap !important;
-        min-width: 90px !important;
-        text-align: center !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-if st.button("Logout", key="logout", help="Log out of Harmony"):
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
-    st.rerun()
-
-# --- JS to apply logout-button style ---
-st.markdown("""
-    <script>
-    const buttons = window.parent.document.querySelectorAll('button');
-    for (let btn of buttons) {
-        if (btn.innerText === "Logout") {
-            btn.classList.add("logout-button");
+else:
+    # --- Logout Button CSS ---
+    st.markdown("""
+        <style>
+        .logout-button {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            z-index: 1000;
+            background-color: #f44336 !important;
+            color: white !important;
+            padding: 10px 20px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            white-space: nowrap !important;
+            min-width: 90px !important;
+            text-align: center !important;
         }
-    }
-    </script>
-""", unsafe_allow_html=True)
+        </style>
+    """, unsafe_allow_html=True)
+
+    # --- Logout Button ---
+    if st.button("Logout", key="logout", help="Log out of Harmony"):
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
+        st.rerun()
+
+    # --- Apply logout style via JavaScript ---
+    st.markdown("""
+        <script>
+        const buttons = window.parent.document.querySelectorAll('button');
+        for (let btn of buttons) {
+            if (btn.innerText === "Logout") {
+                btn.classList.add("logout-button");
+            }
+        }
+        </script>
+    """, unsafe_allow_html=True)
+
 
 
 # --- Floating Add Button ---
