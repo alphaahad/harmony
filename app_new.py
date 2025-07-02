@@ -15,31 +15,45 @@ if "email" not in st.session_state:
     login_screen()
     st.stop()
 
-# --- Logout Button at top right ---
+# --- Logout Button CSS and JavaScript ---
 st.markdown("""
     <style>
-    .stButton > button.logout-button {
+    .logout-button {
         position: fixed;
-        top: 45px;
+        top: 20px;
         right: 25px;
         z-index: 1000;
-        background-color: #f44336;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
+        background-color: #f44336 !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        min-width: 90px !important;
+        text-align: center !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-space, col1 = st.columns([15,1])
-with col1:
-    if st.button("Logout", key="logout", help="Log out of Harmony"):
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.rerun()
+if st.button("Logout", key="logout", help="Log out of Harmony"):
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    st.rerun()
+
+# --- JS to apply logout-button style ---
+st.markdown("""
+    <script>
+    const buttons = window.parent.document.querySelectorAll('button');
+    for (let btn of buttons) {
+        if (btn.innerText === "Logout") {
+            btn.classList.add("logout-button");
+        }
+    }
+    </script>
+""", unsafe_allow_html=True)
+
 
 # --- Floating Add Button ---
 space, col2, col1 = st.columns([25,1,1])
